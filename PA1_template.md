@@ -39,9 +39,9 @@ suppressPackageStartupMessages (library (dplyr, quietly=TRUE))
 
 # use dplyr's pipe operator to filter and summarize
 stepsByDate <-
-  activity                      %>% # from activity
-  filter (!is.na (steps))       %>% # take valid step counts
-  group_by (date)               %>% # group it by the date
+  activity                      %>% # from activity ...
+  filter (!is.na (steps))       %>% # take only valid step counts ...
+  group_by (date)               %>% # group it by the date ...
   summarize (nSteps=sum (steps))    # and total up the steps
 
 # plot a histogram of the steps
@@ -80,16 +80,16 @@ The time series plot of the average step count by interval showing the activity 
 
 ```r
 meanStepsByInterval <-
-  activity                      %>% # from activity
-  filter (!is.na (steps))       %>% # take valid step counts
-  group_by (interval)           %>% # group it by the date
-  summarize (nSteps=mean (steps))   # and total up the steps
+  activity                      %>% # from activity ...
+  filter (!is.na (steps))       %>% # take only the valid step counts ...
+  group_by (interval)           %>% # group it by the interval ...
+  summarize (nSteps=mean (steps))   # and calculate the average #steps
 
 qplot (meanStepsByInterval$interval,
        meanStepsByInterval$nSteps,
        xlab="Interval",
        ylab="Average number of steps") +
-   geom_line (color="blue", size=0.1) +
+   geom_line (color="darkblue", size=0.1) +
    geom_hline (aes (yintercept=mean (meanStepsByInterval$nSteps)),
                color="yellow",
                alpha=0.8)
@@ -97,7 +97,7 @@ qplot (meanStepsByInterval$interval,
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
-The most active interval (ie the 5-minute interval with the most number of steps) is shown together the highest step count.
+The most active interval (ie the 5-minute period with the most number of steps) is shown together the highest step count.
 
 
 
@@ -140,9 +140,8 @@ cleanedActivity$steps <-
 
 # as done earlier, total the steps of each day
 stepsByDate <-
-  cleanedActivity               %>% # from activity
-  filter (!is.na (steps))       %>% # take valid step counts
-  group_by (date)               %>% # group it by the date
+  cleanedActivity               %>% # from activity with imputed missing data ...
+  group_by (date)               %>% # group it by the date ...
   summarize (nSteps=sum (steps))    # and total up the steps
 
 # plot a histogram of the steps
@@ -178,27 +177,33 @@ From the histogram one can see that total daily number of steps has increased wh
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
+The date is used to ascertain if it was a weekeday or a weekend and based on this factor two plots are made with the enhanced data.
 
 
 ```r
+# this function returns either "weekday" or "weekend" depending on the date given to it.
 weekdayType <- function (x) {
   listOfWeekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
-  ifelse (weekdays (as.POSIXct (x)) %in% listOfWeekdays, "weekday", "weekend")
+  ifelse (weekdays (x) %in% listOfWeekdays, "weekday", "weekend")
 }
 
+# add a new column for the weekday type
 cleanedActivity$wd <- as.factor (weekdayType (cleanedActivity$date))
 
+# calculate the mean number of steps in each interval for weekdays and weekends
 meanStepsByInterval <-
-  cleanedActivity               %>% # from activity
-  group_by (interval, wd)       %>% # group it by the date
-  summarize (nSteps=mean (steps))   # and total up the steps
+  cleanedActivity               %>% # from activity with imputed missing data ...
+  group_by (interval, wd)       %>% # group it by the date ...
+  summarize (nSteps=mean (steps))   # and get the average #steps
 
+# plot a faceted graph of the mean number of steps
 qplot (interval, nSteps, data=meanStepsByInterval,
        xlab="Interval", ylab="Average number of steps",
        facets=wd ~ .) +
-   geom_line (color="blue", size=0.1)
+   geom_line (color="darkblue", size=0.1)
 ```
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
 
-end-of-document
+
+The two plots show that the weekday and weekend activities are noticeably  different.
