@@ -75,7 +75,7 @@ median (stepsByDate$nSteps)
 
 ## What is the average daily activity pattern?
 
-The time series plot of the average step count by interval showing the activity over a 24-hour period. One can discern the diurnal cycle: sleep, followed by high activity in the morning, less intense movement in the afternoon and a quietening down towards the evening.
+The time series plot of the average step count by interval showing the activity over a 24-hour period. One can discern the diurnal cycle: sleep, followed by high activity in the morning, less intense movement in the afternoon and a quietening down towards the evening. Though not asked for the average steps over the whole day is shown with a horizontal yellow line. One can see that at the ends of the plot the activity level is well below the average and in the middle most of the data points are above the average line.
 
 
 ```r
