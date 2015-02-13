@@ -30,7 +30,7 @@ head (activity)
 
 ## What is mean total number of steps taken per day?
 
-I am using Hadley Wickham's library *dplyr* to massage the activity data into the required form. The NA measurements are filtered out and the steps are summed up for each day. A histogram of the steps per day (bin width of 3000 steps) shows the distribution.
+I am using Hadley Wickham's library *dplyr* to massage the activity data into the required form. The NA measurements are filtered out and the steps are summed up for each day. A histogram of the steps per day (bin width of 5000 steps) shows the distribution.
 
 
 ```r
@@ -47,7 +47,7 @@ stepsByDate <-
 # plot a histogram of the steps
 qplot (stepsByDate$nSteps,
        xlab="Distribution of steps per day", ylab="Count",
-       binwidth=3000)
+       binwidth=5000)
 ```
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
@@ -88,8 +88,8 @@ meanStepsByInterval <-
 qplot (meanStepsByInterval$interval,
        meanStepsByInterval$nSteps,
        xlab="Interval",
-       ylab="Average number of steps") +
-   geom_line (color="darkblue", size=0.1) +
+       ylab="Average number of steps",
+       geom="line") +
    geom_hline (aes (yintercept=mean (meanStepsByInterval$nSteps)),
                color="yellow",
                alpha=0.8)
@@ -147,7 +147,7 @@ stepsByDate <-
 # plot a histogram of the steps
 qplot(stepsByDate$nSteps,
       xlab="Distribution of steps per day with imputed missing values",
-      ylab="Count", binwidth=3000)
+      ylab="Count", binwidth=5000)
 ```
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
@@ -199,8 +199,8 @@ meanStepsByInterval <-
 # plot a faceted graph of the mean number of steps
 qplot (interval, nSteps, data=meanStepsByInterval,
        xlab="Interval", ylab="Average number of steps",
-       facets=wd ~ .) +
-   geom_line (color="darkblue", size=0.1)
+       geom="line",
+       facets=wd ~ .) 
 ```
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
